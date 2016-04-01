@@ -2,14 +2,22 @@ package napier.ac.uk.gradecalculator;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Andrew on 25/03/2016.
@@ -17,7 +25,7 @@ import android.widget.SimpleCursorAdapter;
 public class Module extends AppCompatActivity{
 
     private String module;
-    private ListView listView;
+    TableLayout table;
     DBHelper dbHelper;
 
     @Override
@@ -31,9 +39,12 @@ public class Module extends AppCompatActivity{
 
         setTitle(module);
 
-        dbHelper = new DBHelper(this);
+        table = (TableLayout) findViewById(R.id.table1);
 
-        final Cursor cursor = dbHelper.getModule(module);
+        BuildTable();
+
+
+        /*final Cursor cursor = dbHelper.getModule(module);
         String [] columns = new String[] {
                 DBHelper.RESULTS_COLUMN_MARK,
                 DBHelper.RESULTS_COLUMN_PERCENTAGE,
@@ -60,7 +71,7 @@ public class Module extends AppCompatActivity{
                 intent.putExtra("m_name", module);
                 startActivity(intent);
             }
-        });
+        });*/
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_module, menu);
@@ -82,5 +93,43 @@ public class Module extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void BuildTable() {
+
+        dbHelper = new DBHelper(this);
+
+        Cursor c = dbHelper.getModule(module);
+
+        int rows = c.getCount();
+        int cols = c.getColumnCount();
+
+        c.moveToFirst();
+
+        // outer for loop
+        for (int i = 0; i < rows; i++) {
+
+            TableRow row = new TableRow(this);
+            float scale = getResources().getDisplayMetrics().density;
+            int dpAsPixels = (int) (5*scale + 0.5f);
+            row.setBackgroundColor(Color.parseColor("#ECEFF1"));
+            row.setPadding(0, dpAsPixels, 0, 0);
+            // inner for loop
+            for (int j = 0; j < cols; j++) {
+
+                TextView tv = new TextView(this);
+                tv.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT, 1));
+                tv.setText(c.getString(j));
+
+                row.addView(tv);
+
+            }
+
+            c.moveToNext();
+
+            table.addView(row);
+
+        }
     }
 }

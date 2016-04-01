@@ -60,14 +60,14 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public Cursor getResults() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery( "SELECT * FROM " + RESULTS_TABLE_NAME, null );
+        Cursor res = db.rawQuery( "SELECT DISTINCT _id FROM " + RESULTS_TABLE_NAME, null );
         return res;
     }
 
     public Cursor getModule(String module) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery("SELECT * FROM " + RESULTS_TABLE_NAME + " WHERE " +
-                RESULTS_COLUMN_ID + "=?", new String[]{module});
+        Cursor res =  db.rawQuery("SELECT mark, percentage, reference FROM " + RESULTS_TABLE_NAME + " WHERE " +
+                RESULTS_COLUMN_ID + "=? AND mark IS NOT NULL", new String[]{module});
         return res;
     }
 }
