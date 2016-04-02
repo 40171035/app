@@ -1,26 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/average"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/table1"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/remain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/table1"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/remainCalc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/table1"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"/>
+
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
+    android:layout_height="wrap_content"
     android:id="@+id/table1">
 
     <TableRow
-        android:background="#607D8B"
+        android:background="#5566c3"
         android:padding="5dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mark" />
+            android:text="Mark"
+            android:textColor="#ffffff"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Percentage" />
+            android:text="Percentage"
+            android:textColor="#ffffff"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Reference" />
+            android:text="Reference"
+            android:textColor="#ffffff"/>
     </TableRow>
 </TableLayout>
+    </RelativeLayout>

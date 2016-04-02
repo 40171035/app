@@ -4,15 +4,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -27,12 +22,21 @@ public class Module extends AppCompatActivity{
     private String module;
     TableLayout table;
     DBHelper dbHelper;
+    private float temp;
+    private float fin;
+    TextView average;
+    TextView remain;
+    TextView remainCalc;
 
+
+    public  static Module instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.module);
 
+
+        instance = this;
 
         Intent intent = getIntent();
         module = intent.getExtras().getString("m_name");
@@ -41,37 +45,16 @@ public class Module extends AppCompatActivity{
 
         table = (TableLayout) findViewById(R.id.table1);
 
+        average = (TextView) findViewById(R.id.average);
+        remain = (TextView) findViewById(R.id.remain);
+        remainCalc = (TextView) findViewById(R.id.remainCalc);
+
+
+
         BuildTable();
-
-
-        /*final Cursor cursor = dbHelper.getModule(module);
-        String [] columns = new String[] {
-                DBHelper.RESULTS_COLUMN_MARK,
-                DBHelper.RESULTS_COLUMN_PERCENTAGE,
-                DBHelper.RESULTS_COLUMN_REFERENCE
-        };
-        int [] widgets = new int[] {
-                R.id.mark,
-                R.id.percentage,
-                R.id.reference
-        };
-
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.module_display,
-                cursor, columns, widgets, 0);
-        listView = (ListView)findViewById(R.id.listView1);
-        listView.setAdapter(cursorAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView listView, View view,
-                                    int position, long id) {
-                Cursor itemCursor = (Cursor) Module.this.listView.getItemAtPosition(position);
-                String module = itemCursor.getString(itemCursor.getColumnIndex(DBHelper.RESULTS_COLUMN_ID));
-                Intent intent = new Intent(getApplicationContext(), EditModule.class);
-                intent.putExtra("m_name", module);
-                startActivity(intent);
-            }
-        });*/
+        temp = 0;
+        calc();
+        average.setText("Your module average is " + String.valueOf(String.format("%.1f%%", fin)));
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_module, menu);
@@ -89,11 +72,12 @@ public class Module extends AppCompatActivity{
                 Intent intent = new Intent(getApplicationContext(), EditModule.class);
                 intent.putExtra("m_name", module);
                 startActivity(intent);
-
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     private void BuildTable() {
 
@@ -112,7 +96,12 @@ public class Module extends AppCompatActivity{
             TableRow row = new TableRow(this);
             float scale = getResources().getDisplayMetrics().density;
             int dpAsPixels = (int) (5*scale + 0.5f);
-            row.setBackgroundColor(Color.parseColor("#ECEFF1"));
+            if ((i % 2) == 0) {
+                row.setBackgroundColor(Color.parseColor("#e2e6e9"));
+            }
+            else{
+                row.setBackgroundColor(Color.parseColor("#ECEFF1"));
+            }
             row.setPadding(0, dpAsPixels, 0, 0);
             // inner for loop
             for (int j = 0; j < cols; j++) {
@@ -131,5 +120,33 @@ public class Module extends AppCompatActivity{
             table.addView(row);
 
         }
+        dbHelper.close();
+    }
+
+    private void calc(){
+        dbHelper = new DBHelper(this);
+
+        Cursor c = dbHelper.getCalc(module);
+
+        int rows = c.getCount();
+        int cols = c.getColumnCount();
+
+        c.moveToFirst();
+
+        // outer for loop
+        for (int i = 0; i < rows; i++) {
+
+            // inner for loop
+            for (int j = 0; j < cols; j++) {
+                float mark = c.getInt(0);
+                float percentage = c.getInt(1);
+                temp = (percentage/100)*mark;
+            }
+            fin = fin + temp;
+
+            c.moveToNext();
+        }
+        dbHelper.close();
+
     }
 }

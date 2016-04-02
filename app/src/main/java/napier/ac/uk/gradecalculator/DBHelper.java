@@ -3,7 +3,6 @@ package napier.ac.uk.gradecalculator;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -26,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + RESULTS_TABLE_NAME + "(" +
                         RESULTS_COLUMN_R_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        RESULTS_COLUMN_ID + " STRING, " +
+                        RESULTS_COLUMN_ID + " TEXT, " +
                         RESULTS_COLUMN_MARK + " INTEGER, " +
                         RESULTS_COLUMN_PERCENTAGE + " INTEGER, " +
                         RESULTS_COLUMN_REFERENCE + " TEXT)"
@@ -67,7 +66,21 @@ public class DBHelper extends SQLiteOpenHelper{
     public Cursor getModule(String module) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery("SELECT mark, percentage, reference FROM " + RESULTS_TABLE_NAME + " WHERE " +
-                RESULTS_COLUMN_ID + "=? AND mark IS NOT NULL", new String[]{module});
+                RESULTS_COLUMN_ID + "=? AND percentage IS NOT NULL", new String[]{module});
         return res;
+    }
+
+    public Cursor getCalc(String module) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery("SELECT mark, percentage FROM " + RESULTS_TABLE_NAME + " WHERE " +
+                RESULTS_COLUMN_ID + "=? AND percentage IS NOT NULL", new String[]{module});
+        return res;
+    }
+
+    public Integer deletePerson(String module) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(RESULTS_TABLE_NAME,
+                RESULTS_COLUMN_ID + " = ? ",
+                new String[]{module});
     }
 }

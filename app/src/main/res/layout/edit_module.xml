@@ -1,32 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+       android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/save"
+        android:text="save"
+        android:layout_below="@+id/table"
+        android:layout_centerInParent="true"/>
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/delete"
+        android:text="delete"
+        android:layout_below="@+id/save"
+        android:paddingTop="@dimen/activity_vertical_margin"/>
+
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
+    android:layout_height="wrap_content"
     android:id="@+id/table">
 
     <TableRow
-        android:background="#607D8B"
+        android:background="#5566c3"
         android:padding="5dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mark" />
+            android:text="Mark"
+            android:textColor="#ffffff"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Percentage" />
+            android:text="Percentage"
+            android:textColor="#ffffff"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Reference" />
+            android:text="Reference"
+            android:textColor="#ffffff"/>
     </TableRow>
-
-
-    <Button
-        android:id="@+id/save"
-        android:text="save"
-        android:gravity="bottom"/>
 </TableLayout>
+</RelativeLayout>

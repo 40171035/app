@@ -16,5 +16,15 @@
         android:layout_centerVertical="true">
     </ListView>
 
+    <TextView
+        android:id="@+id/help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".70"
+        android:maxLines="10"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="To begin, add a module\nby pressing the + button"/>
+
 
 </RelativeLayout>

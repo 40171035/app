@@ -5,31 +5,53 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.text.InputType;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.AdapterView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private String m_name;
     private ListView listView;
     DBHelper dbHelper;
-
+    private Cursor mCursor;
+    private SimpleCursorAdapter mCursorAd;
+    TextView helptext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        helptext = (TextView) findViewById(R.id.help);
+        listView = (ListView) findViewById(R.id.listView1);
 
+
+        listView.setEmptyView(helptext);
+
+        populate();
+
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+
+    }
+    private void refresh(){
+        mCursor = dbHelper.getResults();
+        mCursorAd.swapCursor(mCursor);
+    }
+
+    private void populate(){
         dbHelper = new DBHelper(this);
 
-        final Cursor cursor = dbHelper.getResults();
+        mCursor = dbHelper.getResults();
         String [] columns = new String[] {
                 DBHelper.RESULTS_COLUMN_ID
         };
@@ -37,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
                 R.id.module
         };
 
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.module_list,
-                cursor, columns, widgets, 0);
-        listView = (ListView)findViewById(R.id.listView1);
-        listView.setAdapter(cursorAdapter);
+        mCursorAd = new SimpleCursorAdapter(this, R.layout.module_list,
+                mCursor, columns, widgets, 0);
+
+        listView.setAdapter(mCursorAd);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -53,30 +75,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        
-    }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-
+        dbHelper.close();
     }
 
     private void alert(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        builder.setTitle("Enter Module Name");
 
 // Set up the input
         final EditText input = new EditText(this);
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
 // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_name = input.getText().toString();
                 dbHelper.addSingleResult(m_name);
+                refresh();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -98,8 +116,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.addModule:
                 alert();
 
+
+
         }
 
         return super.onOptionsItemSelected(item);
+
     }
 }
