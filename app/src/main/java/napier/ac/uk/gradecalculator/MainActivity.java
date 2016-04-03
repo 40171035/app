@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.Menu;
@@ -25,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Cursor mCursor;
     private SimpleCursorAdapter mCursorAd;
     TextView helptext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,24 +38,26 @@ public class MainActivity extends AppCompatActivity {
         populate();
 
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
 
     }
-    private void refresh(){
+
+    private void refresh() {
         mCursor = dbHelper.getResults();
         mCursorAd.swapCursor(mCursor);
     }
 
-    private void populate(){
+    private void populate() {
         dbHelper = new DBHelper(this);
 
         mCursor = dbHelper.getResults();
-        String [] columns = new String[] {
+        String[] columns = new String[]{
                 DBHelper.RESULTS_COLUMN_ID
         };
-        int [] widgets = new int[] {
+        int[] widgets = new int[]{
                 R.id.module
         };
 
@@ -78,18 +80,16 @@ public class MainActivity extends AppCompatActivity {
         dbHelper.close();
     }
 
-    private void alert(){
+    private void alert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter Module Name");
+        builder.setTitle(R.string.alertTitle);
 
-// Set up the input
         final EditText input = new EditText(this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-// Set up the buttons
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.alertAdd, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_name = input.getText().toString();
@@ -97,30 +97,21 @@ public class MainActivity extends AppCompatActivity {
                 refresh();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.alertCancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
-
         builder.show();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        //handle presses on the action bar items
         switch (item.getItemId()) {
-
             case R.id.addModule:
                 alert();
-
-
-
         }
-
         return super.onOptionsItemSelected(item);
-
     }
 }

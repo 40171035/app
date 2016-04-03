@@ -1,4 +1,24 @@
 <resources>
     <string name="app_name">GradeCalculator</string>
     <string name="add">+</string>
+    <string name="alertTitle">Enter Module Name</string>
+    <string name="alertAdd">Add</string>
+    <string name="alertCancel">Cancel</string>
+    <string name="helpText">To begin, add a module\nby pressing the + button</string>
+
+    <string name="edit">Edit</string>
+    <string name="markColumn">Mark</string>
+    <string name="PercentageColumn">Percentage</string>
+    <string name="ReferenceColumn">Reference</string>
+    <string name="averageText">Your module average is</string>
+    <string name="remainText">You need to achieve</string>
+    <string name="remainText2">in your remaining assessments</string>
+    <string name="achieveHint">What grade do you need?</string>
+
+    <string name="save">Save</string>
+    <string name="deleteButton">Delete Module</string>
+    <string name="alertTitleDelete">Are you sure you want to delete this module</string>
+    <string name="alertYes">Yes</string>
+    <string name="markHint">0 - 100</string>
+    <string name="percentageHint">%</string>
 </resources>

@@ -24,7 +24,7 @@
         android:maxLines="10"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:text="To begin, add a module\nby pressing the + button"/>
+        android:text="@string/helpText"/>
 
 
 </RelativeLayout>

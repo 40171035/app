@@ -1,3 +1,6 @@
+<ScrollView android:id="@+id/scrollView1"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,22 +10,74 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/table1"
         android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/averageText"/>
+    <TextView
+        android:id="@+id/average2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/average"
+        android:textSize="36sp"
+        android:textStyle="bold"
         android:layout_centerHorizontal="true"/>
     <TextView
         android:id="@+id/remain"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/table1"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/average2"
         android:layout_centerHorizontal="true"/>
+    <Button android:id="@+id/calculatebtn"
+        android:layout_below="@+id/remain"
+        android:layout_alignParentRight="true"
+        android:text="Calculate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <EditText android:id="@+id/calculatein"
+        android:layout_below="@+id/remain"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/calculatebtn"
+        android:layout_centerVertical="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/achieveHint"
+        android:inputType="number"
+        android:maxLines="1" />
     <TextView
         android:id="@+id/remainCalc"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/table1"
+        android:layout_below="@+id/calculatein"
         android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:visibility="invisible"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/remainText"/>
+    <TextView
+        android:id="@+id/remainCalc2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/remainCalc"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:textSize="36sp"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/remainCalc3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/remainCalc2"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:text="@string/remainText2"/>
+    <TextView
+        android:id="@+id/remainCalc4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/remainCalc3"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -30,26 +85,27 @@
     android:id="@+id/table1">
 
     <TableRow
-        android:background="#5566c3"
+        android:background="@color/tableHeader"
         android:padding="5dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mark"
+            android:text="@string/markColumn"
             android:textColor="#ffffff"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Percentage"
+            android:text="@string/PercentageColumn"
             android:textColor="#ffffff"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Reference"
+            android:text="@string/ReferenceColumn"
             android:textColor="#ffffff"/>
     </TableRow>
 </TableLayout>
     </RelativeLayout>
+    </ScrollView>

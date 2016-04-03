@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,13 +15,13 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-public class EditModule extends AppCompatActivity{
+public class EditModule extends AppCompatActivity {
 
     DBHelper dbHelper;
     private String module;
     private int total;
     private int rowcount;
-    private  int totalpercentage;
+    private int totalpercentage;
     private boolean valid;
 
     Button save;
@@ -31,7 +29,6 @@ public class EditModule extends AppCompatActivity{
     EditText mark;
     EditText percentage;
     EditText reference;
-    EditText test;
     TableLayout table;
 
 
@@ -64,17 +61,12 @@ public class EditModule extends AppCompatActivity{
         });
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*int markint = Integer.parseInt(mark.getText().toString());
-                int percentageint = Integer.parseInt(percentage.getText().toString());
-                String referencestring = reference.getText().toString();
-
-                dbHelper.addResult(module, markint, percentageint, referencestring);*/
-                if(Validate()) {
-                    dbHelper.deletePerson(module);
-                    for (int j = 1; j < total; j=j+3) {
+                if (Validate()) {
+                    dbHelper.deleteResults(module);
+                    for (int j = 1; j < total; j = j + 3) {
                         mark = (EditText) findViewById(j);
-                        percentage = (EditText) findViewById(j+1);
-                        reference = (EditText) findViewById(j+2);
+                        percentage = (EditText) findViewById(j + 1);
+                        reference = (EditText) findViewById(j + 2);
 
                         int markint = Integer.parseInt(mark.getText().toString());
                         int percentageint = Integer.parseInt(percentage.getText().toString());
@@ -83,6 +75,7 @@ public class EditModule extends AppCompatActivity{
                         dbHelper.addResult(module, markint, percentageint, referencestring);
 
                     }
+                    dbHelper.Refine(module);
                     Module.instance.recreate();
                     finish();
                 } else {
@@ -92,59 +85,60 @@ public class EditModule extends AppCompatActivity{
             }
         });
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_edit_module, menu);
         return true;
     }
 
-/*    private void Validate(){
-        for(int x = 0; x <= total; x = x +3){
-            mark = (EditText)findViewById(x);
-            int markint = Integer.parseInt(mark.getText().toString());
-            if (0>markint||markint>100){
-                mark.setError("ddddd");
-            }
-        }
-    }*/
-    private boolean Validate(){
+    private boolean Validate() {
         valid = true;
         totalpercentage = 0;
-        for (int j = 1; j < total; j=j+3) {
+        for (int j = 1; j < total; j = j + 3) {
+            mark = (EditText) findViewById(j);
+
+
+            if (mark.getText().toString().matches("")) {
+                mark.setText("0");
+
+            }
+        }
+        for (int j = 1; j < total; j = j + 3) {
+            percentage = (EditText) findViewById(j + 1);
+            if (percentage.getText().toString().matches("")) {
+                percentage.setText("0");
+
+            }
+        }
+        for (int j = 1; j < total; j = j + 3) {
             mark = (EditText) findViewById(j);
 
             int markint = Integer.parseInt(mark.getText().toString());
-            if (0>markint||markint>100) {
+            if (0 > markint || markint > 100) {
                 mark.setError("Please enter a value between 0 and 100");
                 valid = false;
             }
         }
-        for (int j = 1; j < total; j=j+3) {
-            percentage = (EditText) findViewById(j+1);
+        for (int j = 1; j < total; j = j + 3) {
+            percentage = (EditText) findViewById(j + 1);
             int percentageint = Integer.parseInt(percentage.getText().toString());
             totalpercentage = totalpercentage + percentageint;
-            if (percentageint<1||percentageint>100){
+            if (percentageint < 0 || percentageint > 100) {
                 percentage.setError("Please enter a value between 1 and 100");
                 valid = false;
             }
         }
-        for (int j = 1; j < total; j=j+3) {
-            if (totalpercentage>100){
+        for (int j = 1; j < total; j = j + 3) {
+            if (totalpercentage > 100) {
                 percentage.setError("Total Percentage cannot be over 100!");
                 valid = false;
             }
         }
         return valid;
     }
-    public void afterTextChanged(Editable s) {
-        if (mark.getText().length() < 1) {
-            mark.setError("Title is required");
-        } else {
-            mark.setError(null);
-        }
-    }
 
-    private void InitialRowAdd(){
-        if (rowcount == 0){
+    private void InitialRowAdd() {
+        if (rowcount == 0) {
             addRow();
         }
     }
@@ -167,10 +161,9 @@ public class EditModule extends AppCompatActivity{
             float scale = getResources().getDisplayMetrics().density;
             int dpAsPixels = (int) (5 * scale + 0.5f);
             if ((rowcount % 2) == 0) {
-                row.setBackgroundColor(Color.parseColor("#e2e6e9"));
-            }
-            else{
-                row.setBackgroundColor(Color.parseColor("#ECEFF1"));
+                row.setBackgroundResource(R.color.tableRow);
+            } else {
+                row.setBackgroundResource(R.color.tableRowAlt);
             }
             row.setPadding(0, dpAsPixels, 0, 0);
             // inner for loop
@@ -180,6 +173,13 @@ public class EditModule extends AppCompatActivity{
                 tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT, 1));
                 tv.setText(c.getString(j));
+                if (j == 0) {
+                    tv.setHint(R.string.markHint);
+                    tv.setInputType(InputType.TYPE_CLASS_NUMBER);
+                } else if (j == 1) {
+                    tv.setHint(R.string.percentageHint);
+                    tv.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }
                 total++;
                 tv.setId(total);
                 row.addView(tv);
@@ -196,15 +196,14 @@ public class EditModule extends AppCompatActivity{
 
     }
 
-    private void addRow(){
+    private void addRow() {
         TableRow row = new TableRow(this);
         float scale = getResources().getDisplayMetrics().density;
-        int dpAsPixels = (int) (5*scale + 0.5f);
+        int dpAsPixels = (int) (5 * scale + 0.5f);
         if ((rowcount % 2) == 0) {
-            row.setBackgroundColor(Color.parseColor("#e2e6e9"));
-        }
-        else{
-            row.setBackgroundColor(Color.parseColor("#ECEFF1"));
+            row.setBackgroundResource(R.color.tableRow);
+        } else {
+            row.setBackgroundResource(R.color.tableRowAlt);
         }
         row.setPadding(0, dpAsPixels, 0, 0);
         // inner for l
@@ -212,19 +211,16 @@ public class EditModule extends AppCompatActivity{
             EditText tv = new EditText(this);
             tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT, 1));
-            if (j == 0){
-                tv.setHint("0-100");
+            if (j == 0) {
+                tv.setHint(R.string.markHint);
                 tv.setInputType(InputType.TYPE_CLASS_NUMBER);
-            }
-            else if (j == 1){
-                tv.setHint("%");
+            } else if (j == 1) {
+                tv.setHint(R.string.percentageHint);
                 tv.setInputType(InputType.TYPE_CLASS_NUMBER);
             }
             total++;
             tv.setId(total);
             row.addView(tv);
-
-
         }
 
 
@@ -232,20 +228,20 @@ public class EditModule extends AppCompatActivity{
         rowcount++;
     }
 
-    private void alert(){
+    private void alert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure you want to delete this module?");
 
 // Set up the buttons
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.alertYes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dbHelper.deletePerson(module);
+                dbHelper.deleteResults(module);
                 finish();
                 Module.instance.finish();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.alertCancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -262,7 +258,7 @@ public class EditModule extends AppCompatActivity{
         switch (item.getItemId()) {
 
             case R.id.addText:
-            addRow();
+                addRow();
         }
 
         return super.onOptionsItemSelected(item);

@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="tableHeader">#5566c3</color>
+    <color name="tableRow">#e2e6e9</color>
+    <color name="tableRowAlt">#ECEFF1</color>
+
 </resources>
