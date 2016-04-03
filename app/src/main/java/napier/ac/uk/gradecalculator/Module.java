@@ -121,7 +121,6 @@ public class Module extends AppCompatActivity {
 
         c.moveToFirst();
 
-        // outer for loop
         for (int i = 0; i < rows; i++) {
 
             TableRow row = new TableRow(this);
@@ -133,7 +132,6 @@ public class Module extends AppCompatActivity {
                 row.setBackgroundResource(R.color.tableRowAlt);
             }
             row.setPadding(0, dpAsPixels, 0, 0);
-            // inner for loop
             for (int j = 0; j < cols; j++) {
 
                 TextView tv = new TextView(this);
@@ -164,7 +162,6 @@ public class Module extends AppCompatActivity {
         c.moveToFirst();
         for (int i = 0; i < rows; i++) {
 
-            // inner for loop
             for (int j = 0; j < cols; j++) {
                 percentagetotal = percentagetotal + c.getInt(1);
             }
@@ -174,10 +171,8 @@ public class Module extends AppCompatActivity {
         c.moveToFirst();
         percentagetotal = percentagetotal / 2;
 
-        // outer for loop
         for (int i = 0; i < rows; i++) {
 
-            // inner for loop
             for (int j = 0; j < cols; j++) {
                 float mark = c.getInt(0);
                 float percentage = c.getInt(1);

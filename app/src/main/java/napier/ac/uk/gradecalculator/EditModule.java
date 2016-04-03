@@ -154,7 +154,6 @@ public class EditModule extends AppCompatActivity {
 
         c.moveToFirst();
 
-        // outer for loop
         for (int i = 0; i < rows; i++) {
 
             TableRow row = new TableRow(this);
@@ -166,7 +165,6 @@ public class EditModule extends AppCompatActivity {
                 row.setBackgroundResource(R.color.tableRowAlt);
             }
             row.setPadding(0, dpAsPixels, 0, 0);
-            // inner for loop
             for (int j = 0; j < cols; j++) {
 
                 EditText tv = new EditText(this);
@@ -206,7 +204,6 @@ public class EditModule extends AppCompatActivity {
             row.setBackgroundResource(R.color.tableRowAlt);
         }
         row.setPadding(0, dpAsPixels, 0, 0);
-        // inner for l
         for (int j = 0; j < 3; j++) {
             EditText tv = new EditText(this);
             tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
@@ -232,7 +229,6 @@ public class EditModule extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure you want to delete this module?");
 
-// Set up the buttons
         builder.setPositiveButton(R.string.alertYes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -254,7 +250,6 @@ public class EditModule extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        //handle presses on the action bar items
         switch (item.getItemId()) {
 
             case R.id.addText:
